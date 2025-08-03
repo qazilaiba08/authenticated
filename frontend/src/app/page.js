@@ -13,23 +13,26 @@ export default function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+useEffect(() => {
+  setLoading(true);
+  axios
+    .get(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
+    })
+    .then((res) => {
+      if (res.status !== 200) {
+        throw new Error("Failed to fetch products");
+      }
+      setProducts(res.data.products || res.data); 
+      setLoading(false);
+    })
+    .catch(() => setLoading(false));
+}, []);
+ 
 
-  useEffect(() => {
-    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/products`)
-      .then((res) => {
-        if (res.status !== 200) {
-          throw new Error("Failed to fetch products");
-        };aa
-        headers: {
-         Authorization: `Bearer ${localStorage.getItem("token")}`
-        }
-        setProducts(res.data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
-
- const filtered = products.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()));
+ const filtered = products.filter((data) => data.name.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div>
