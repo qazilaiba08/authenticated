@@ -6,17 +6,14 @@ import {
   deleteProduct
 } from '../Controllers/productsControllers.js';
 import authMiddleware from '../Middlewears/authMiddleware.js';
-import "../data.json"
 
-const router = express.Router();
+const productRouter = express.Router();
 
-router.use(authMiddleware); 
+productRouter.use(authMiddleware); 
 
-router.get('/', getAllProducts, (req, res) => {
-  res.status(200).json(res.locals.products);
-});
-router.post('/', addProduct);
-router.put('/:id', updateProduct);
-router.delete('/:id', deleteProduct);
+productRouter.get('/', getAllProducts);
+productRouter.post('/', addProduct);
+productRouter.put('/:id', updateProduct);
+productRouter.delete('/:id', deleteProduct);
 
-export default router;
+export default productRouter;
